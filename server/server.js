@@ -15,6 +15,7 @@ const Blog = require("./Schema/Blog");
 const Notification = require("./Schema/Notification");
 const Comment = require("./Schema/Comment");
 const { title } = require("process");
+const port=process.env.port || 8000;
 const app = express();
 app.get("/", (req, res) => {
   res.json({ msg: "Sujal" });
@@ -28,6 +29,11 @@ app.use(
     credentials: true,
   })
 );
+
+// app.use(express.static("./client/dist"));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+// });
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -112,8 +118,6 @@ app.post("/forgot-password", async (req, res) => {
   user.reset_password_otp_expires = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
   await user.save();
 
-  console.log(user);
-
   // Send OTP via email
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -137,8 +141,7 @@ app.post("/reset-password", async (req, res) => {
   const { email, otp, newPassword } = req.body;
 
   // Find user by email
-  const user = await User.findOne({ "personal_info.email":email });
-  console.log(user);
+  const user = await User.findOne({ "personal_info.email": email });
   if (!user || user.reset_password_otp !== parseInt(otp)) {
     return res.status(400).json({ error: "Invalid OTP" });
   }
@@ -189,8 +192,6 @@ app.post("/create-blog", auth, async (req, res) => {
   try {
     const authorId = req.user;
     let { title, des, banner, tags, content, draft, id } = req.body;
-    console.log(req.body);
-
     if (!title.length) {
       return res
         .status(403)
@@ -632,13 +633,12 @@ const deleteComment = async (_id) => {
 };
 
 app.post("/delete-comment", auth, async (req, res) => {
-  console.log("sujal");
   const user_id = req.user;
   const { _id } = req.body;
-  console.log(req.body);
+
   try {
     const result = await Comment.findOne({ _id });
-    console.log(result);
+
     if (!result) {
       return res.status(404).json({ status: "Comment not found" });
     }
@@ -877,6 +877,6 @@ app.post("/delete-blog", auth, async (req, res) => {
     });
 });
 
-app.listen(8000, () => {
-  console.log("http://localhost:8000");
+app.listen(port, () => {
+  console.log(`http://localhost:${port}`);
 });

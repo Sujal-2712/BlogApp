@@ -28,7 +28,6 @@ const EditProfile = () => {
                     'Authorization': `Bearer ${access_token}`
                 }
             }).then((res) => {
-                console.log(res.data);
                 setLoading(false);
                 setProfile(res.data);
             })
@@ -181,7 +180,7 @@ const EditProfile = () => {
 
                                     <p className='text-dark-grey -mt-3'>Username will use to search users and will be visible to all users</p>
 
-                                    <textarea name="bio" defaultValue={bio} className='inout-box h-64 lg:h-40 resize-none mt-5 pl-5 leading-7' placeholder='Bio' maxLength={bioLimit} onChange={handleCharacterChange}></textarea>
+                                    <textarea name="bio" defaultValue={bio} className='inout-box h-64 bg-grey p-2 lg:h-40 resize-none mt-5 pl-5 leading-7' placeholder='Bio' maxLength={bioLimit} onChange={handleCharacterChange}></textarea>
                                     <p>{charactersLeft} characters left</p>
 
                                     <p className='my-6 text-dark-grey'>Add your social handles below</p>
@@ -192,7 +191,7 @@ const EditProfile = () => {
                                                 let link = social_links[key];
                                                 return <div className='flex flex-col'> 
                                                 <p className='mb-1 capitalize'>{key} </p>
-                                                    <InputBox key={index} name={key} type="text" value={link}
+                                                    <InputBox placeholder={"Paste link here"} key={index} name={key} type="text" value={link}
                                                         icon="fi" />
                                                 </div>
                                             })

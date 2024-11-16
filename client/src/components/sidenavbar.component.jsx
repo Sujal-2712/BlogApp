@@ -31,11 +31,7 @@ const SideNav = () => {
         setShowSideNav(false); // Hide sidebar when a link is clicked
         navigate(path);
     };
-
-    if (access_token == null) {
-        return <Navigate to="/signin" />;
-    }
-
+    
     return (
         <section className='relative flex gap-10 py-0 m-0 max-md:flex-col'>
             <div className='sticky top-[80px] z-30'>

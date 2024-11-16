@@ -77,7 +77,7 @@ const UserAuthForm = ({ type }) => {
             return;
         }
 
-        if (!validPassword(formData.password)) {
+        if (type == "signup" && !validPassword(formData.password)) {
             return;
         }
 
@@ -201,7 +201,7 @@ const UserAuthForm = ({ type }) => {
                 {/* Forgot Password Link */}
                 {type === "signin" && (
                     <p className="text-dark-grey mt-4 text-center text-xl">
-                        Forgot your password? 
+                        Forgot your password?
                         <Link to="/forgot-password" className="underline text-xl text-black ml-1">
                             Reset it here
                         </Link>
